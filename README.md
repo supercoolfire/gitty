@@ -42,21 +42,24 @@ git branch -d branch-name # delete branch
 
 ## Branch Management / Inspection
 ```bash
-git branch                  # List local branches
-git branch -r               # List remote branches
-git branch -a               # List all branches (local + remote)
-git branch <branch-name>    # Create a new branch
-git branch -d <branch-name> # Delete a branch
+git branch                        # List local branches
+git branch -r                     # List remote branches
+git branch -a                     # List all branches (local + remote)
+git branch <branch-name>          # Create a new branch
+git branch -d <branch-name>       # Delete a branch
+git checkout <branch-name>        # switch branch
+git checkout -b <new-branch-name  # crate new branch
 ```
 
 ## ☁️ Remote Repos
 ```bash
-git remote -v             # list remotes
+git remote -v                   # list remotes
 git remote add origin <url>
-git push -u origin main   # push first time
-git push                  # push changes
-git pull                  # pull latest changes
-git fetch                 # fetch without merge
+git remote set-url origin <url> # change the remote origin
+git push -u origin main         # push first time
+git push                        # push changes
+git pull                        # pull latest changes
+git fetch                       # fetch without merge
 ```
 
 ## 🛠 Undo & Fix
