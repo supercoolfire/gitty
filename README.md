@@ -6,6 +6,12 @@ git config --global user.name "Your Name"
 git config --global user.email "you@example.com"
 git config --list
 ```
+## 🔧 Unsetup
+```bash
+git config --global --unset user.name #or
+git config --system --unset user.name #or
+C:\Users\<YourUser>\.gitconfig
+```
 
 ## 📂 Starting a Project
 ```bash
@@ -56,7 +62,7 @@ git checkout -b <new-branch-name  # crate new branch
 git remote -v                   # list remotes
 git remote add origin <url>
 git remote set-url origin <url> # change the remote origin
-git push -u origin main         # push first time
+git push -u origin <branch>         # push first time
 git push                        # push changes
 git pull                        # pull latest changes
 git fetch                       # fetch without merge
@@ -97,6 +103,16 @@ git reflog                # show HEAD history (commits, checkouts, resets)
 git log --all
 git checkout <commit>     # return to a commit
 git branch recovered <commit>  # save it on a branch
+```
+
+## Untrack files or folders
+Done in c# project
+```shell
+git ls-files # list all the files  
+git rm --cached -r <path> # remove the bin and obj directories (and their contents recursively) from Git's index
+git commit -m "Stop tracking bin and obj directories"`
+git status
+git clean -n -d # Perform a dry run of the git clean command. This allows to see which files would be deleted.
 ```
 
 ## 🔹 Recover Deleted Branch (and preserve working directory)
