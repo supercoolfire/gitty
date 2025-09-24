@@ -78,17 +78,6 @@ git reset --hard HEAD~1   # undo commit, discard changes
 git reflog                # show all HEAD moves (recover lost commits)
 ```
 
-## pull only `workflow.md` without overwriting your new files
-```bash
-git init # Initialize Git in fresh Laravel
-git remote add origin https://github.com/<your-username>/<your-repo>.git # Reconnect to your GitHub repo
-git fetch origin main # Make sure Git knows the default branch (usually main)
-git sparse-checkout init --cone # Enable sparse-checkout
-git sparse-checkout set workflow.md # Tell Git to only fetch workflow.md
-git checkout main # Pull it
-```
-
-
 ## 📦 Stash
 ```bash
 git stash push -m "msg"   # stash all
