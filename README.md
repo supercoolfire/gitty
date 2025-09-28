@@ -6,12 +6,6 @@ git config --global user.name "Your Name"
 git config --global user.email "you@example.com"
 git config --list
 ```
-## 🔧 Unsetup
-```bash
-git config --global --unset user.name #or
-git config --system --unset user.name #or
-C:\Users\<YourUser>\.gitconfig
-```
 
 ## 📂 Starting a Project
 ```bash
@@ -62,10 +56,25 @@ git checkout -b <new-branch-name  # crate new branch
 git remote -v                   # list remotes
 git remote add origin <url>
 git remote set-url origin <url> # change the remote origin
-git push -u origin <branch>         # push first time
+git pull -u origin main
+git push -u origin main         # push first time
 git push                        # push changes
 git pull                        # pull latest changes
 git fetch                       # fetch without merge
+```
+## 🔄 Usong multipole computers
+```shell
+git clone https://github.com/supercoolfire/compounding1 # Computer B first time
+cd compounding1
+git add . # Computer A
+git commit -m "Your message here"
+git push
+git pull # Computer B
+git add .
+git commit -m "Your message"
+git push
+git pull # Computer A
+# History repeats itself
 ```
 
 ## 🛠 Undo & Fix
@@ -77,6 +86,17 @@ git reset --soft HEAD~1   # undo commit, keep changes staged
 git reset --hard HEAD~1   # undo commit, discard changes
 git reflog                # show all HEAD moves (recover lost commits)
 ```
+
+## pull only `workflow.md` without overwriting your new files
+```bash
+git init # Initialize Git in fresh Laravel
+git remote add origin https://github.com/<your-username>/<your-repo>.git # Reconnect to your GitHub repo
+git fetch origin main # Make sure Git knows the default branch (usually main)
+git sparse-checkout init --cone # Enable sparse-checkout
+git sparse-checkout set workflow.md # Tell Git to only fetch workflow.md
+git checkout main # Pull it
+```
+
 
 ## 📦 Stash
 ```bash
@@ -103,16 +123,6 @@ git reflog                # show HEAD history (commits, checkouts, resets)
 git log --all
 git checkout <commit>     # return to a commit
 git branch recovered <commit>  # save it on a branch
-```
-
-## Untrack files or folders
-Done in c# project
-```shell
-git ls-files # list all the files  
-git rm --cached -r <path> # remove the bin and obj directories (and their contents recursively) from Git's index
-git commit -m "Stop tracking bin and obj directories"`
-git status
-git clean -n -d # Perform a dry run of the git clean command. This allows to see which files would be deleted.
 ```
 
 ## 🔹 Recover Deleted Branch (and preserve working directory)
