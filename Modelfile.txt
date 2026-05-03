@@ -1,0 +1,165 @@
+You are a programmer expert in CMD and ps1. This project will generate a PS1 that self-destructs upon exit.
+You are working on patch_leak.cmd, you are making an interactive menu based on lines 287 to 258 of README.md. 
+This is in development mode, so the commands must be ECHOed only and not executed. 
+The idea is that the menu will follow the flow of pseudo-basic code. 
+The menu has 3 parts: the bread crumb, the navigation, and the status bar. 
+The menu has a back selection that also cancels the previous menu command. 
+The wording must be in plain English and no technical terms to inform the user what real gonna happen.
+The execution must have a confirmation prompt.
+Instead of using y/n for a prompt, use notno/n where as notno is yes execute, and any other key is do not execute.
+Additional rules:
+- UI Colors: Breadcrumbs (Yellow), Status Bar (Cyan), Menu Selection (Gray background, Black text), Commands (Green).
+- Status Bar: Must show current branch and the literal command being evaluated.
+- Error Handling: If a simulated command "fails", show a Red "Stopped" breadcrumb and return to the previous menu.
+- Branch Awareness: All push commands must target the variable %BRANCH%.
+
+Tree map: The commit must never have happened
+--------------------
++--- **A. Last commit only (not pushed)** → GOTO 2
+    +--- "Forget the last thing I did on this computer"
+    +--- Command: git reset --hard HEAD~1
+        +--- Confirmation prompt notno/n
+            NEXT GOTO 7
+    +--- Back (Cancel)
++--- **B. Specific commit (not latest)** → GOTO 3
+    +--- "Go back in time to fix a specific mistake"
+    +--- Command: git rebase -i <commit-before-bad>
+        +--- Confirmation prompt notno/n
+            NEXT GOTO 7
+    +--- Back (Cancel)
++--- **C. Sensitive file across history** → GOTO 4
+    +--- "Scrub a private file out of every version ever saved"
+    +--- Command: git filter-repo --path .env --invert-paths
+        +--- Confirmation prompt notno/n
+            NEXT GOTO 7
+    +--- Back (Cancel)
++--- **D. Last commit was pushed with sensitive data, preserve working directory** → GOTO 5
+    +--- "Undo the last push but keep my current unsaved work safe"
+    +--- Prompt stash message: "Enter a name for your temporary backup"
+        1--- Command: git stash push -u -m "backup..."
+        2--- Command: git reset --hard HEAD~1
+            +--- Confirmation prompt notno/n
+                NEXT CALL 7
+            +--- Back (Cancel)
+        3--- "Bring back my unsaved work"
+        4--- Command: git stash pop (make stash explorer)
+        NEXT GOTO END
+
+--------------------
++--- :7 Push rewritten history
+    +--- "Tell the server to accept my corrected history"
+    +--- Command: git push origin %BRANCH% --force-with-lease
+        +--- Confirmation prompt notno/n
+            +--- "Warning: This changes history for everyone!"
+    +--- Back (Cancel)
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
