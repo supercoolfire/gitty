@@ -18,32 +18,30 @@ if /I "%MENU_CHOICE%"=="A" goto STEP2
 if /I "%MENU_CHOICE%"=="B" goto STEP3
 if /I "%MENU_CHOICE%"=="C" goto STEP4
 if /I "%MENU_CHOICE%"=="D" goto STEP5
-if /I "%MENU_CHOICE%"=="R" goto STEP6
-if /I "%MENU_CHOICE%"=="X" goto STEP8
 goto END
 
 :STEP2
 set "BREAD=Menu > Step 2"
-call :RUN_COMMAND "git reset --hard HEAD~1" || goto STOP_FLOW
+call :RUN_COMMAND "git reset --hard HEAD~1" || goto MENU
 goto STEP7
 
 :STEP3
 set "BREAD=Menu > Step 3"
 set "BASE_COMMIT="
 set /P "BASE_COMMIT=Commit before the bad commit: "
-if "!BASE_COMMIT!"=="" goto STOP_FLOW
+if "!BASE_COMMIT!"=="" goto MENU
 echo In the editor, change pick to drop for the bad commit.
 set "CMD_TEXT=git rebase -i !BASE_COMMIT!"
-call :RUN_COMMAND_FROM_ENV || goto STOP_FLOW
+call :RUN_COMMAND_FROM_ENV || goto MENU
 goto STEP7
 
 :STEP4
 set "BREAD=Menu > Step 4"
 set "PRIVATE_PATH="
 set /P "PRIVATE_PATH=Private file or folder to remove from all history: "
-if "!PRIVATE_PATH!"=="" goto STOP_FLOW
+if "!PRIVATE_PATH!"=="" goto MENU
 set CMD_TEXT=git filter-repo --path "!PRIVATE_PATH!" --invert-paths
-call :RUN_COMMAND_FROM_ENV || goto STOP_FLOW
+call :RUN_COMMAND_FROM_ENV || goto MENU
 goto STEP7
 
 :STEP5
@@ -52,46 +50,29 @@ set "BACKUP_MSG="
 set /P "BACKUP_MSG=Enter a name for your temporary backup (or press Enter for default): "
 if "!BACKUP_MSG!"=="" set "BACKUP_MSG=backup before fixing leaked private item"
 set CMD_TEXT=git stash push -u -m "!BACKUP_MSG!"
-call :RUN_COMMAND_FROM_ENV "SKIP_DIRTY" || goto STOP_FLOW
-call :RUN_COMMAND "git reset --hard HEAD~1" "SKIP_DIRTY" || goto STOP_FLOW
-goto STEP7_FROM_5
-
-:STEP7_FROM_5
-set "BREAD=Menu > Step 5 > Step 7"
-call :RUN_PUSH "git push origin %BRANCH% --force-with-lease" || goto STOP_FLOW
+call :RUN_COMMAND_FROM_ENV "SKIP_DIRTY" || goto MENU
+call :RUN_COMMAND "git reset --hard HEAD~1" "SKIP_DIRTY" || goto MENU
+call :STEP7_SUB || goto STEP5_RECOVER
+:STEP5_RECOVER
+echo Bring back my unsaved work
 call :RUN_COMMAND "git stash pop" "SKIP_DIRTY" || goto STOP_FLOW
-goto END_FLOW
-
-:STEP6
-set "BREAD=Menu > Step 6"
-call :RUN_COMMAND "git reflog" "SKIP_DIRTY" || goto STOP_FLOW
-set "SAFE_COMMIT="
-set /P "SAFE_COMMIT=Safe commit hash: "
-if "!SAFE_COMMIT!"=="" goto STOP_FLOW
-set "CMD_TEXT=git reset --hard !SAFE_COMMIT!"
-call :RUN_COMMAND_FROM_ENV || goto STOP_FLOW
-call :RUN_PUSH "git push origin %BRANCH% --force-with-lease" || goto STOP_FLOW
 goto END_FLOW
 
 :STEP7
-set "BREAD=%BREAD% > Step 7"
-call :RUN_PUSH "git push origin %BRANCH% --force-with-lease" || goto STOP_FLOW
+set "BREAD=Menu > Step 7"
+call :RUN_PUSH "git push origin %BRANCH% --force-with-lease" || goto MENU
 goto END_FLOW
 
-:STEP7_FROM_5
-set "BREAD=Menu > Step 5 > Step 7"
-call :RUN_PUSH "git push origin %BRANCH% --force-with-lease" || goto STOP_FLOW
-call :RUN_COMMAND "git stash pop" "SKIP_DIRTY" || goto STOP_FLOW
-goto END_FLOW
-
-:STEP8
-set "BREAD=Menu > Step 8"
-call :RUN_COMMAND "git reset --hard" || goto STOP_FLOW
-goto END_FLOW
+:STEP7_SUB
+set "OLD_BREAD=!BREAD!"
+set "BREAD=!BREAD! > Step 7"
+call :RUN_PUSH "git push origin %BRANCH% --force-with-lease"
+set "BREAD=!OLD_BREAD!"
+exit /B %ERRORLEVEL%
 
 :STOP_FLOW
 echo.
-call :SHOW_BREAD_EXTRA "Stopped"
+call :SHOW_BREAD_EXTRA_STOP "Stopped"
 echo Stopped. Nothing was executed.
 call :PAUSE_SCREEN
 goto END
@@ -229,9 +210,9 @@ powershell -NoProfile -Command "Write-Host $env:BREAD_TEXT -ForegroundColor Yell
 set "BREAD_TEXT="
 exit /B 0
 
-:SHOW_BREAD_EXTRA
+:SHOW_BREAD_EXTRA_STOP
 set "BREAD_TEXT=Breadcrumb: !BREAD! > %~1"
-powershell -NoProfile -Command "Write-Host $env:BREAD_TEXT -ForegroundColor Yellow"
+powershell -NoProfile -Command "Write-Host $env:BREAD_TEXT -ForegroundColor Red"
 set "BREAD_TEXT="
 exit /B 0
 
@@ -291,8 +272,6 @@ exit /B 0
 >> "%MENU_PS1%" echo     [pscustomobject]@{ Key = "B"; Text = "Go back in time to fix a specific mistake"; Preview = "git rebase -i COMMIT_BEFORE_BAD" },
 >> "%MENU_PS1%" echo     [pscustomobject]@{ Key = "C"; Text = "Scrub a private file out of every version ever saved"; Preview = "git filter-repo --path PRIVATE_PATH --invert-paths" },
 >> "%MENU_PS1%" echo     [pscustomobject]@{ Key = "D"; Text = "Undo the last push but keep my current unsaved work safe"; Preview = "git stash push -u -m BACKUP_MESSAGE" },
->> "%MENU_PS1%" echo     [pscustomobject]@{ Key = "R"; Text = "Emergency recovery (if something went wrong)"; Preview = "git reflog" },
->> "%MENU_PS1%" echo     [pscustomobject]@{ Key = "X"; Text = "Clean up a broken working state"; Preview = "git reset --hard" },
 >> "%MENU_PS1%" echo     [pscustomobject]@{ Key = "Q"; Text = "Quit"; Preview = "no command" }
 >> "%MENU_PS1%" echo ^)
 >> "%MENU_PS1%" echo if ([Console]::IsInputRedirected^) {
