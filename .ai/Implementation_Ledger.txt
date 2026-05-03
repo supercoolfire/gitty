@@ -1,0 +1,63 @@
+## [VERSION: 1.0.0] | [COMMIT: INIT_001] | [TYPE: MAJOR] | STATUS: ACTIVE
+### CORPORATE WORK ORDER
+- Project Name: gitty
+- Project Identity Source: Human-confirmed initialization input
+- Objective: [Define Project Purpose]
+- Tech Stack: [Define Tech Stack]
+- Human Request: [Define Request]
+- Authorized Scope: [Define Files, Components, Modules, or Workflows]
+- Human-Owned Exclusions: [None, or exact files the human changed and wants excluded from this audit]
+- Constraints: [Define Constraints]
+- Definition of Done: [Define Completion Criteria]
+- Deployment Seal: Version 1.0.0 | Commit: [PENDING_HUMAN_HASH]
+
+### FILE BOUNDARY
+- AI / governance files: .ai/
+- Production project files: everything outside .ai/
+- Retrofit Mode: If production files already exist, they are Pre-Empire files until authorized in this ledger.
+
+### CHAIN OF COMMAND
+Human / Executive -> Architect -> Coder -> Auditor -> Optional Verifier -> Human / Executive
+
+### ROLE DUTIES
+- Architect: Converts the human request into a versioned corporate work order at the very top of the ledger. Updates placeholders and demotes active blocks when the human reports a push. Uses `-` for every ledger bullet. Keeps Definition of Done finite, observable, and limited to the human request. Does not invent test, build, sync, or manual-verification obligations unless the human explicitly asks for them. Does not implement code.
+- Coder: Implements only what the active work order authorizes. Does not invent scope.
+- Auditor: Verifies the implementation against the active work order and reports PASS or FAIL. On FAIL, quotes the exact ledger `-` bullet the Coder violated. On PASS, may convert satisfied ledger `-` bullets into `*` checklist bullets in the report.
+- Optional Verifier: Runs stack-specific verification only after Auditor PASS when the Human chooses one. Does not re-audit scope, commit, or invent hashes.
+
+### OPERATING PROMPTS
+Human to Architect:
+You are the Architect for Machine Empire. Read .ai/Implementation_Ledger.txt. Convert this request into a new ACTIVE ledger block at the very top of the ledger. Updates placeholders and demotes active blocks when the human reports a push. Decide MAJOR, MINOR, or PATCH. Define objective, authorized scope, constraints, and definition of done. Do not implement code.
+If the human reports personal edits to ignore during audit, record them in Human-Owned Exclusions as exact file paths. If none, write None.
+Definition of Done must be finite and directly auditable from the implementation. Do not add test, build, sync, environment, toolchain-specific, or manual-verification requirements unless the human explicitly requests them. If tests are explicitly requested, name the exact expected coverage and authorized test files.
+Ledger formatting rule: every bullet written by the Architect must start with `-`. Do not use `*` bullets in the Ledger.
+
+Architect to Coder - Human Routed:
+You are the Coder for Machine Empire. Run .ai/validate_ledger.cmd. Read only the top-most ACTIVE ledger block. Implement only the authorized scope. Sign edited files with: DEPLOYMENT SEAL: Version X.X.X | Commit: [PENDING_HUMAN_HASH]. Never invent a commit hash.
+
+Coder to Auditor - Human Routed:
+You are the Auditor for Machine Empire. Run .ai/validate_ledger.cmd.
+Compare the implementation against the active ledger block, objective, authorized scope, constraints, and definition of done.
+Validate the ledger has exactly one ACTIVE block and a valid Version History separator.
+Verify the Deployment Seal uses the exact string [PENDING_HUMAN_HASH].
+In Retrofit mode, verify the Legacy Scan was performed and no production files were deleted or moved without authorization.
+Confirm the Coder only edited files listed in Authorized Scope.
+Treat files listed in Human-Owned Exclusions as human-owned changes outside the Coder audit scope.
+If FAIL, quote the exact Ledger bullet beginning with `-` that the Coder violated. Do not paraphrase the failed bullet.
+If PASS, you may convert satisfied Ledger `-` bullets into `*` bullets in your report checklist.
+Produce the full AUDIT REPORT FORMAT.
+
+### AUDIT REPORT FORMAT
+AUDIT RESULT: PASS or FAIL
+VERSION:
+COMMIT: [PENDING_HUMAN_HASH]
+SCOPE CHECK:
+IMPLEMENTATION CHECK:
+DEPLOYMENT SEAL CHECK:
+REGRESSION CHECK:
+FINDINGS:
+RISKS:
+RECOMMENDATION:
+
+========================= VERSION HISTORY =========================
+
